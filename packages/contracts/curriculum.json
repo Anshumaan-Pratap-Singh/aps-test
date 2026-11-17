@@ -1,0 +1,184 @@
+{
+  "version": "1.0",
+  "tracks": [
+    {
+      "id": "trader",
+      "name": "Quantitative Trader",
+      "description": "Numerical speed, probabilistic reasoning, market microstructure and market-making judgement.",
+      "sections": [
+        {
+          "id": "trader-1",
+          "title": "Stage 1 · Numerical Proficiency",
+          "description": "Mental arithmetic, percentages, fractions, sequences and estimation under time pressure.",
+          "items": [
+            { "id": "lesson:mental-arithmetic", "type": "lesson", "title": "Mental arithmetic techniques", "difficulty": 2, "minutes": 20, "skills": ["arithmetic", "multiplication"] },
+            { "id": "lesson:percentages-fractions", "type": "lesson", "title": "Percentages, fractions and decimals", "difficulty": 2, "minutes": 15, "skills": ["percentages", "fractions"] },
+            { "id": "trainer:speed-math", "type": "trainer", "title": "Speed Arithmetic", "difficulty": 3, "minutes": 10, "href": "/mental-math/train?type=mixed", "skills": ["arithmetic"] },
+            { "id": "trainer:sequences", "type": "trainer", "title": "Number Sequences", "difficulty": 3, "minutes": 10, "href": "/mental-math/sequences", "skills": ["sequences"] },
+            { "id": "trainer:fractions", "type": "trainer", "title": "Fractions to Decimals", "difficulty": 2, "minutes": 10, "href": "/mental-math/fractions", "skills": ["fractions"] }
+          ]
+        },
+        {
+          "id": "trader-2",
+          "title": "Stage 2 · Probability Fundamentals",
+          "description": "Rules of probability, conditioning, Bayes, expectation, variance and counting.",
+          "items": [
+            { "id": "lesson:conditional-probability", "type": "lesson", "title": "Conditional probability and Bayes' theorem", "difficulty": 3, "minutes": 25, "skills": ["probability", "bayes", "conditional"] },
+            { "id": "lesson:expectation-variance", "type": "lesson", "title": "Expectation, variance and covariance", "difficulty": 3, "minutes": 25, "skills": ["expected_value", "variance"] },
+            { "id": "trainer:probability", "type": "trainer", "title": "Probability & EV Trainer", "difficulty": 4, "minutes": 15, "href": "/probability/train", "skills": ["probability"] }
+          ]
+        },
+        {
+          "id": "trader-3",
+          "title": "Stage 3 · Advanced Problem Solving",
+          "description": "Indicators, symmetry, recursion, random walks and optimal stopping.",
+          "items": [
+            { "id": "lesson:indicator-variables", "type": "lesson", "title": "Indicator variables and linearity", "difficulty": 5, "minutes": 20, "skills": ["indicator_variables", "expected_value"] },
+            { "id": "lesson:optimal-stopping", "type": "lesson", "title": "Recursion and optimal stopping", "difficulty": 6, "minutes": 25, "skills": ["optimal_stopping"] },
+            { "id": "trainer:olympiad", "type": "trainer", "title": "Competition Problem Set", "difficulty": 6, "minutes": 20, "href": "/probability/problems", "skills": ["combinatorics", "number_theory"] }
+          ]
+        },
+        {
+          "id": "trader-4",
+          "title": "Stage 4 · Market Fundamentals",
+          "description": "Instruments, spreads, liquidity, order books and microstructure.",
+          "items": [
+            { "id": "lesson:order-books", "type": "lesson", "title": "Order books, spreads and liquidity", "difficulty": 3, "minutes": 20, "skills": ["microstructure"] },
+            { "id": "lesson:etf-mechanics", "type": "lesson", "title": "ETFs, NAV and creation/redemption", "difficulty": 4, "minutes": 20, "skills": ["etf"] }
+          ]
+        },
+        {
+          "id": "trader-5",
+          "title": "Stage 5 · Market Making",
+          "description": "Fair value, spread construction, inventory skew, adverse selection and P&L.",
+          "items": [
+            { "id": "lesson:market-making", "type": "lesson", "title": "Quoting, inventory and skew", "difficulty": 5, "minutes": 30, "skills": ["market_making", "inventory_management"] },
+            { "id": "lesson:adverse-selection", "type": "lesson", "title": "Adverse selection and toxic flow", "difficulty": 6, "minutes": 20, "skills": ["adverse_selection"] }
+          ]
+        },
+        {
+          "id": "trader-6",
+          "title": "Stage 6 · Trading Simulations",
+          "description": "Apply everything in seeded, reproducible simulations.",
+          "items": [
+            { "id": "game:market-making", "type": "game", "title": "Market-Making Dice", "difficulty": 5, "minutes": 10, "href": "/market-games/market-making", "skills": ["market_making"] },
+            { "id": "game:etf-arbitrage", "type": "game", "title": "ETF Arbitrage", "difficulty": 6, "minutes": 10, "href": "/market-games/etf-arbitrage", "skills": ["etf"] },
+            { "id": "game:event-contracts", "type": "game", "title": "Event Contracts", "difficulty": 6, "minutes": 10, "href": "/market-games/event-contracts", "skills": ["bayes", "market_making"] },
+            { "id": "game:betting-board", "type": "game", "title": "Betting Board", "difficulty": 4, "minutes": 8, "href": "/market-games/betting-board", "skills": ["expected_value"] },
+            { "id": "game:fermi", "type": "game", "title": "Fermi Estimation", "difficulty": 4, "minutes": 8, "href": "/market-games/fermi", "skills": ["estimation"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "researcher",
+      "name": "Quantitative Researcher",
+      "description": "Probability theory, stochastic processes and calculus, statistical learning and research methodology.",
+      "sections": [
+        {
+          "id": "researcher-1",
+          "title": "Probability and Statistics",
+          "description": "Measure-light probability theory, limit theorems and inference.",
+          "items": [
+            { "id": "lesson:probability-spaces", "type": "lesson", "title": "Probability spaces and random variables", "difficulty": 4, "minutes": 30, "skills": ["probability"] },
+            { "id": "lesson:limit-theorems", "type": "lesson", "title": "LLN, CLT and concentration", "difficulty": 5, "minutes": 30, "skills": ["statistics"] },
+            { "id": "lesson:hypothesis-testing", "type": "lesson", "title": "Hypothesis testing and multiple comparisons", "difficulty": 5, "minutes": 25, "skills": ["statistics", "multiple_testing"] }
+          ]
+        },
+        {
+          "id": "researcher-2",
+          "title": "Stochastic Processes",
+          "description": "Markov chains, random walks, martingales and stopping times.",
+          "items": [
+            { "id": "lesson:markov-chains", "type": "lesson", "title": "Markov chains and stationary distributions", "difficulty": 5, "minutes": 30, "skills": ["markov_chains"] },
+            { "id": "lesson:martingales", "type": "lesson", "title": "Martingales and optional stopping", "difficulty": 7, "minutes": 30, "skills": ["martingales"] }
+          ]
+        },
+        {
+          "id": "researcher-3",
+          "title": "Stochastic Calculus",
+          "description": "Brownian motion, quadratic variation, Itô's lemma and GBM.",
+          "items": [
+            { "id": "lesson:brownian-motion", "type": "lesson", "title": "Brownian motion and quadratic variation", "difficulty": 7, "minutes": 30, "skills": ["stochastic_calculus"] },
+            { "id": "lesson:ito-lemma", "type": "lesson", "title": "Itô's lemma and geometric Brownian motion", "difficulty": 8, "minutes": 35, "skills": ["stochastic_calculus"] }
+          ]
+        },
+        {
+          "id": "researcher-4",
+          "title": "Machine Learning for Quantitative Finance",
+          "description": "Regression, regularisation and the bias–variance trade-off.",
+          "items": [
+            { "id": "lesson:regression", "type": "lesson", "title": "Linear regression, ridge and lasso", "difficulty": 5, "minutes": 30, "skills": ["regression"] }
+          ]
+        },
+        {
+          "id": "researcher-5",
+          "title": "Research Methodology",
+          "description": "How to avoid fooling yourself: leakage, look-ahead, selection bias and validation.",
+          "items": [
+            { "id": "lesson:backtest-pitfalls", "type": "lesson", "title": "Backtest pitfalls: look-ahead, leakage, survivorship", "difficulty": 5, "minutes": 30, "skills": ["research_methodology"] },
+            { "id": "lesson:validation", "type": "lesson", "title": "Walk-forward, purged CV and embargo", "difficulty": 6, "minutes": 30, "skills": ["time_series_validation"] },
+            { "id": "lab:research", "type": "lab", "title": "Research Laboratory", "difficulty": 6, "minutes": 30, "href": "/research/lab", "skills": ["research_methodology", "regression"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "developer",
+      "name": "Quantitative Developer",
+      "description": "Algorithms, modern C++, systems performance, concurrency and trading-system engineering.",
+      "sections": [
+        {
+          "id": "developer-1",
+          "title": "Programming Fundamentals",
+          "description": "Complexity analysis and the data structures trading systems rely on.",
+          "items": [
+            { "id": "lesson:complexity", "type": "lesson", "title": "Complexity and core data structures", "difficulty": 3, "minutes": 25, "skills": ["algorithms"] },
+            { "id": "coding:problems", "type": "lab", "title": "Coding Laboratory", "difficulty": 5, "minutes": 30, "href": "/coding", "skills": ["algorithms"] }
+          ]
+        },
+        {
+          "id": "developer-2",
+          "title": "Advanced C++",
+          "description": "Ownership, lifetimes, value categories and zero-cost abstractions.",
+          "items": [
+            { "id": "lesson:cpp-raii-move", "type": "lesson", "title": "RAII, move semantics and the Rule of Five", "difficulty": 5, "minutes": 30, "skills": ["cpp"] }
+          ]
+        },
+        {
+          "id": "developer-3",
+          "title": "Systems Programming",
+          "description": "Memory hierarchy, locality and the cost of abstractions.",
+          "items": [
+            { "id": "lesson:cache-locality", "type": "lesson", "title": "Caches, locality and false sharing", "difficulty": 6, "minutes": 25, "skills": ["systems"] }
+          ]
+        },
+        {
+          "id": "developer-4",
+          "title": "Concurrency",
+          "description": "Atomics, memory ordering and lock-free queues.",
+          "items": [
+            { "id": "lesson:memory-ordering", "type": "lesson", "title": "Atomics, memory ordering and SPSC queues", "difficulty": 8, "minutes": 35, "skills": ["concurrency", "cpp_memory_model"] }
+          ]
+        },
+        {
+          "id": "developer-5",
+          "title": "Trading Systems Engineering",
+          "description": "Order books, matching and feed handling.",
+          "items": [
+            { "id": "lesson:limit-order-book", "type": "lesson", "title": "Limit order books and price-time priority", "difficulty": 6, "minutes": 30, "skills": ["trading_systems"] }
+          ]
+        },
+        {
+          "id": "developer-6",
+          "title": "Low-Latency Optimisation",
+          "description": "Measuring latency honestly: distributions, tails and benchmarking pitfalls.",
+          "items": [
+            { "id": "lesson:latency", "type": "lesson", "title": "Measuring latency: p50, p99 and pitfalls", "difficulty": 5, "minutes": 25, "skills": ["low_latency"] },
+            { "id": "lab:perf-sim", "type": "lab", "title": "Systems Performance Simulator", "difficulty": 6, "minutes": 15, "href": "/coding/performance", "skills": ["low_latency", "systems"] }
+          ]
+        }
+      ]
+    }
+  ]
+}
