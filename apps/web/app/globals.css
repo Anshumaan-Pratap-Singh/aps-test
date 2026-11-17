@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+/* ---------- APS design tokens (single source of colour truth) ---------- */
+@theme {
+  --color-bg: #050b14;
+  --color-surface: #0f192a;
+  --color-elevated: #142238;
+  --color-border: #1e3a5f;
+  --color-cyan: #00e5ff;
+  --color-teal: #00f5d4;
+  --color-blue: #3185d8;
+  --color-muted: #8fa3ba;
+  --color-text: #eaf4ff;
+  --color-error: #ff4d4d;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --shadow-glow: 0 0 0 1px rgb(0 229 255 / 0.35), 0 0 18px -6px rgb(0 229 255 / 0.45);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.num,
+.font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: rgb(0 229 255 / 0.3);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+/* KaTeX: inherit our text colour; keep display math scrollable on narrow screens */
+.katex {
+  font-size: 1.05em;
+}
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+.math-error {
+  color: var(--color-error);
+  font-family: var(--font-mono);
+}
+
+/* Feedback flashes: purely decorative, never block input */
+@keyframes flash-ok {
+  from { box-shadow: 0 0 0 2px rgb(0 245 212 / 0.7); }
+  to { box-shadow: 0 0 0 0 rgb(0 245 212 / 0); }
+}
+@keyframes flash-bad {
+  from { box-shadow: 0 0 0 2px rgb(255 77 77 / 0.7); }
+  to { box-shadow: 0 0 0 0 rgb(255 77 77 / 0); }
+}
+.flash-ok { animation: flash-ok 280ms ease-out; }
+.flash-bad { animation: flash-bad 280ms ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Lesson prose */
+.prose-aps p { margin: 0.6rem 0; line-height: 1.7; color: var(--color-text); }
+.prose-aps h2 { font-size: 1.15rem; font-weight: 600; margin: 1.6rem 0 0.4rem; color: var(--color-cyan); }
+.prose-aps h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.3rem; }
+.prose-aps ul { list-style: disc; padding-left: 1.25rem; margin: 0.5rem 0; }
+.prose-aps ol { list-style: decimal; padding-left: 1.25rem; margin: 0.5rem 0; }
+.prose-aps li { margin: 0.25rem 0; line-height: 1.6; }
+.prose-aps code { font-family: var(--font-mono); font-size: 0.88em; background: var(--color-elevated); padding: 0.05rem 0.3rem; border-radius: 4px; }
+.prose-aps pre { font-family: var(--font-mono); font-size: 0.82rem; background: #08111f; border: 1px solid var(--color-border); border-radius: 8px; padding: 0.9rem; overflow-x: auto; margin: 0.8rem 0; line-height: 1.5; }
+.prose-aps pre code { background: none; padding: 0; }
+.prose-aps strong { color: var(--color-teal); font-weight: 600; }
