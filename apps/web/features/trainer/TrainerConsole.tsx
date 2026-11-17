@@ -81,7 +81,9 @@ export function TrainerConsole(props: ConsoleProps) {
   const s = t.stats;
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_260px]" data-testid="trainer-console">
-      <Card className={`relative ${t.feedback && showFeedback ? (t.feedback.correct ? "flash-ok" : t.feedback.correct === false ? "flash-bad" : "") : ""}`} key={t.feedback?.key}>
+      <Card className="relative">
+        {/* Keyed overlay replays the flash animation without remounting the input */}
+        {t.feedback && showFeedback && <span key={t.feedback.key} aria-hidden className={`pointer-events-none absolute inset-0 rounded-lg ${t.feedback.correct ? "flash-ok" : "flash-bad"}`} />}
         <div className="flex items-center justify-between text-xs text-muted">
           <span className="font-mono num" data-testid="question-index">Q{t.index + 1}{questionLimit ? ` / ${questionLimit}` : ""}</span>
           <span className="flex items-center gap-3">

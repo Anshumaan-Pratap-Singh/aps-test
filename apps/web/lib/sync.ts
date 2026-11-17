@@ -18,7 +18,18 @@ export async function enqueueGame(game: LocalGame) {
   void drain();
 }
 
-export async function syncSession(session: LocalSession): Promise<void> {
+const inflight = new Map<string, Promise<void>>();
+
+/** Sync one session. Concurrent calls for the same session share one request chain. */
+export function syncSession(session: LocalSession): Promise<void> {
+  const existing = inflight.get(session.id);
+  if (existing) return existing;
+  const p = doSyncSession(session).finally(() => inflight.delete(session.id));
+  inflight.set(session.id, p);
+  return p;
+}
+
+async function doSyncSession(session: LocalSession): Promise<void> {
   const chunks = Math.max(1, Math.ceil(session.attempts.length / CHUNK));
   for (let c = 0; c < chunks; c++) {
     const part = session.attempts.slice(c * CHUNK, (c + 1) * CHUNK);

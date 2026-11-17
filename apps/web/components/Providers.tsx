@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
+import { z } from "zod";
 import { api, ApiError, UserSchema } from "@/lib/api";
 import { startSyncLoop } from "@/lib/sync";
 import { installErrorReporting } from "@/lib/perf";
@@ -13,8 +14,8 @@ export function Providers({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     installErrorReporting();
-    api("/users/me", {}, UserSchema)
-      .then((u) => setUser(u))
+    api("/auth/session", {}, z.object({ user: UserSchema.nullable() }))
+      .then((r) => setUser(r.user))
       .catch((e) => setUser(null, e instanceof ApiError && e.status === 401 ? "signed_out" : "offline"));
     return startSyncLoop();
   }, [setUser]);

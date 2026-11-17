@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.core.db import get_db
 from app.core.ratelimit import rate_limit
-from app.core.security import COOKIE_NAME, create_token, current_user, hash_password, verify_password
+from app.core.security import COOKIE_NAME, create_token, current_user, current_user_optional, hash_password, verify_password
 from app.models.entities import User
 from app.schemas.api import LoginIn, RegisterIn, UserOut
 
@@ -44,6 +44,12 @@ async def login(body: LoginIn, response: Response, db: AsyncSession = Depends(ge
         raise HTTPException(401, "invalid credentials")
     _set_cookie(response, create_token(user.id))
     return user
+
+
+@router.get("/session")
+async def session(user: User | None = Depends(current_user_optional)):
+    """Session probe that never errors for anonymous visitors (avoids noisy 401s)."""
+    return {"user": UserOut.model_validate(user).model_dump(mode="json") if user else None}
 
 
 @router.post("/logout", status_code=204)

@@ -76,7 +76,7 @@ export function Dashboard() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h2 className="font-semibold text-cyan">Take the baseline assessment</h2>
-              <p className="text-sm text-muted">Six minutes across arithmetic, sequences, fractions and probability to set your starting difficulty levels.</p>
+              <p className="text-sm text-muted">About five minutes across arithmetic, sequences and fractions to set your starting difficulty levels.</p>
             </div>
             <Link href="/assessments/baseline" className="rounded-md bg-cyan text-bg px-4 py-2 text-sm font-semibold hover:bg-teal">Start baseline</Link>
           </div>

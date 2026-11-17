@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 
 from fastapi import HTTPException
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,7 +20,7 @@ BATCH_SEED_MULT = 100003
 
 
 async def ingest_batch(db: AsyncSession, user: User, payload) -> dict:
-    key = f"{user.id}:{payload.idempotency_key}"
+    key = hashlib.sha256(f"{user.id}:{payload.idempotency_key}".encode()).hexdigest()  # fixed length, per-user namespace
     existing = await db.get(IdempotencyKey, key)
     if existing is not None:
         return existing.response
@@ -70,8 +71,16 @@ async def ingest_batch(db: AsyncSession, user: User, payload) -> dict:
     response = {"session_id": str(session.id), "accepted": inserted, "duplicates": len(rows) - inserted,
                 "server_validated": session.server_validated, "accuracy": session.accuracy,
                 "correct": session.correct_attempts, "total": session.total_attempts, "score": session.score}
-    db.add(IdempotencyKey(key=key[:80], user_id=user.id, response=response))
-    await db.commit()
+    db.add(IdempotencyKey(key=key, user_id=user.id, response=response))
+    try:
+        await db.commit()
+    except IntegrityError:
+        # A concurrent identical request committed first; return its stored response.
+        await db.rollback()
+        stored = await db.get(IdempotencyKey, key)
+        if stored is None:
+            raise
+        return stored.response
     return response
 
 

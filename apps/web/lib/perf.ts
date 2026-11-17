@@ -18,27 +18,40 @@ export function record(metric: Metric, ms: number) {
   const arr = buf[metric];
   arr.push(ms);
   if (arr.length > MAX) arr.shift();
-  if (arr.length % 25 === 0) persist();
+  schedulePersist();
+}
+
+let persistTimer: ReturnType<typeof setTimeout> | null = null;
+let loaded = false;
+/** Debounced, off the hot path; also flushed on pagehide. */
+function schedulePersist() {
+  if (persistTimer) return;
+  persistTimer = setTimeout(() => { persistTimer = null; persist(); }, 500);
 }
 
 function persist() {
+  if (!loaded) loadSamples(); // merge earlier pages' samples before overwriting
   try { localStorage.setItem("aps-perf", JSON.stringify(buf)); } catch { /* quota/private mode */ }
 }
 
 export function loadSamples(): Record<Metric, number[]> {
-  try {
-    const raw = localStorage.getItem("aps-perf");
-    if (raw) {
-      const parsed = JSON.parse(raw) as Record<Metric, number[]>;
-      for (const k of Object.keys(buf) as Metric[]) if (buf[k].length < (parsed[k]?.length ?? 0)) buf[k] = parsed[k] ?? [];
-    }
-  } catch { /* ignore */ }
+  if (!loaded) {
+    loaded = true;
+    try {
+      const raw = localStorage.getItem("aps-perf");
+      if (raw) {
+        const parsed = JSON.parse(raw) as Record<Metric, number[]>;
+        for (const k of Object.keys(buf) as Metric[]) buf[k] = [...(parsed[k] ?? []), ...buf[k]].slice(-MAX);
+      }
+    } catch { /* ignore */ }
+  }
   return buf;
 }
 
 export function clearSamples() {
+  loaded = true;
   for (const k of Object.keys(buf) as Metric[]) buf[k] = [];
-  persist();
+  try { localStorage.removeItem("aps-perf"); } catch { /* ignore */ }
 }
 
 /** Call right after the state update that shows the next question. */
@@ -67,6 +80,7 @@ export function installEventTiming() {
 export function installErrorReporting() {
   if (typeof window === "undefined") return;
   installEventTiming();
+  window.addEventListener("pagehide", () => { if (persistTimer) { clearTimeout(persistTimer); persistTimer = null; } persist(); });
   window.addEventListener("error", (e) => { errors.push({ message: String(e.message), at: Date.now() }); });
   window.addEventListener("unhandledrejection", (e) => { errors.push({ message: String(e.reason), at: Date.now() }); });
 }

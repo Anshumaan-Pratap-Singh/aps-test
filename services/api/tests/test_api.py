@@ -192,3 +192,9 @@ async def test_code_execution_disabled(client):
     assert st["server_execution_enabled"] is False
     r = await client.post("/api/v1/code/run", json={"problem_id": "lru", "language": "python", "source": "print(1)"})
     assert r.status_code == 501
+
+
+async def test_session_probe_anonymous(client):
+    client.cookies.clear()
+    r = await client.get("/api/v1/auth/session")
+    assert r.status_code == 200 and r.json() == {"user": None}

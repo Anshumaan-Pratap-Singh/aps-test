@@ -11,8 +11,8 @@ export function PageHeader({ title, kicker, children }: { title: string; kicker?
   );
 }
 
-export function Card({ children, className = "", as: Tag = "div" }: { children: ReactNode; className?: string; as?: "div" | "section" | "article" }) {
-  return <Tag className={`rounded-lg border border-border bg-surface p-4 ${className}`}>{children}</Tag>;
+export function Card({ children, className = "", as: Tag = "div", ...rest }: { children: ReactNode; className?: string; as?: "div" | "section" | "article" } & Record<`data-${string}` | `aria-${string}`, string | undefined>) {
+  return <Tag className={`rounded-lg border border-border bg-surface p-4 ${className}`} {...rest}>{children}</Tag>;
 }
 
 export function SectionTitle({ children, aside }: { children: ReactNode; aside?: ReactNode }) {
