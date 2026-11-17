@@ -1,0 +1,32 @@
+# Local development stack: PostgreSQL, Redis, FastAPI, Next.js.
+# Usage: cp .env.example .env && docker compose up --build   →  http://localhost:3000
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: aps
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aps}
+      POSTGRES_DB: aps
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U aps"], interval: 3s, retries: 20 }
+    ports: ["5432:5432"]
+  redis:
+    image: redis:7-alpine
+    healthcheck: { test: ["CMD", "redis-cli", "ping"], interval: 3s, retries: 20 }
+  api:
+    build: { context: ., dockerfile: services/api/Dockerfile }
+    environment:
+      APS_ENV: ${APS_ENV:-development}
+      APS_DATABASE_URL: postgresql+asyncpg://aps:${POSTGRES_PASSWORD:-aps}@db:5432/aps
+      APS_REDIS_URL: redis://redis:6379/0
+      APS_JWT_SECRET: ${APS_JWT_SECRET:-dev-insecure-secret-change-me-0123456789}
+      APS_COOKIE_SECURE: ${APS_COOKIE_SECURE:-false}
+      APS_CORS_ORIGINS: '["http://localhost:3000"]'
+    depends_on: { db: { condition: service_healthy }, redis: { condition: service_healthy } }
+    ports: ["8000:8000"]
+  web:
+    build: { context: ., dockerfile: apps/web/Dockerfile, args: { APS_API_ORIGIN: "http://api:8000" } }
+    depends_on: [api]
+    ports: ["3000:3000"]
+volumes:
+  pgdata:
