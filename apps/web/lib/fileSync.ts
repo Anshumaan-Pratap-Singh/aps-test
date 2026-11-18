@@ -49,7 +49,10 @@ const gameRank = (g: LocalGame) => [g.endedAt != null ? 1 : 0, g.events.length, 
 const lessonRank = (l: LessonProgress) => [l.updatedAt, l.status === "completed" ? 1 : 0, l.checksTotal];
 
 function better(a: number[], b: number[]) {
-  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] > b[i];
+  for (let i = 0; i < a.length; i++) {
+    const x = a[i] ?? 0, y = b[i] ?? 0;
+    if (x !== y) return x > y;
+  }
   return false;
 }
 
