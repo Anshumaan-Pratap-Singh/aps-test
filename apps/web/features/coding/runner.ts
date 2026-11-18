@@ -17,7 +17,7 @@ let seq = 0;
 let loaded = false;
 
 function getWorker(): Worker {
-  if (!worker) worker = new Worker("/py-worker.js");
+  if (!worker) worker = new Worker(`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/py-worker.js`);
   return worker;
 }
 

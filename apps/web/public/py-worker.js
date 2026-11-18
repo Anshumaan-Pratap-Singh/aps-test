@@ -1,7 +1,9 @@
 /* Python execution worker (Pyodide/WebAssembly). Runs entirely in the user's browser sandbox:
    no filesystem or network access to the host, and the page terminates this worker on timeout. */
-importScripts("/pyodide/pyodide.js");
-let pyReady = loadPyodide({ indexURL: "/pyodide/" });
+// Paths are relative to this worker so the site also works under a base path (GitHub Pages).
+const PYODIDE_URL = new URL("pyodide/", self.location.href).href;
+importScripts(PYODIDE_URL + "pyodide.js");
+let pyReady = loadPyodide({ indexURL: PYODIDE_URL });
 
 const HARNESS = `
 import sys, io, traceback, time

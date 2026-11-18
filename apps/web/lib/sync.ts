@@ -79,6 +79,7 @@ async function syncGame(game: LocalGame): Promise<void> {
 }
 
 export async function drain(): Promise<{ sent: number; failed: number }> {
+  if (process.env.NEXT_PUBLIC_STATIC) return { sent: 0, failed: 0 }; // static build: no server to sync to
   if (running || typeof navigator !== "undefined" && !navigator.onLine) return { sent: 0, failed: 0 };
   running = true;
   let sent = 0, failed = 0;

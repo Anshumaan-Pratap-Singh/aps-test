@@ -2,7 +2,7 @@
  * Local-first persistence in IndexedDB. Everything the user does is saved here
  * first; the sync queue mirrors it to the server when signed in and online.
  */
-import { createStore, del, get, set, values, type UseStore } from "idb-keyval";
+import { createStore, del, get, set, setMany, values, type UseStore } from "idb-keyval";
 
 export interface LocalAttempt {
   eventId: string;
@@ -78,17 +78,31 @@ function s() {
   return stores;
 }
 
+/** Listeners notified after any user-data write (used by the Gist file sync). */
+const changeListeners = new Set<() => void>();
+export function onDataChange(fn: () => void) {
+  changeListeners.add(fn);
+  return () => { changeListeners.delete(fn); };
+}
+function changed<T>(p: Promise<T>): Promise<T> {
+  return p.then((v) => { changeListeners.forEach((fn) => fn()); return v; });
+}
+
 export const db = {
-  saveSession: (x: LocalSession) => set(x.id, x, s().sessions),
+  saveSession: (x: LocalSession) => changed(set(x.id, x, s().sessions)),
   getSession: (id: string) => get<LocalSession>(id, s().sessions),
   allSessions: async () => ((await values<LocalSession>(s().sessions)) ?? []).sort((a, b) => b.startedAt - a.startedAt),
-  saveGame: (x: LocalGame) => set(x.id, x, s().games),
+  saveGame: (x: LocalGame) => changed(set(x.id, x, s().games)),
   allGames: async () => ((await values<LocalGame>(s().games)) ?? []).sort((a, b) => b.startedAt - a.startedAt),
-  saveLesson: (x: LessonProgress) => set(x.id, x, s().lessons),
+  saveLesson: (x: LessonProgress) => changed(set(x.id, x, s().lessons)),
   allLessons: async () => (await values<LessonProgress>(s().lessons)) ?? [],
   outboxPut: (id: string, job: OutboxJob) => set(id, job, s().outbox),
   outboxAll: async () => (await values<OutboxJob>(s().outbox)) ?? [],
   outboxDel: (id: string) => del(id, s().outbox),
+  /** Bulk writes used by import/sync merges; they do not fire change listeners. */
+  putSessions: (xs: LocalSession[]) => setMany(xs.map((x) => [x.id, x] as [string, unknown]), s().sessions),
+  putGames: (xs: LocalGame[]) => setMany(xs.map((x) => [x.id, x] as [string, unknown]), s().games),
+  putLessons: (xs: LessonProgress[]) => setMany(xs.map((x) => [x.id, x] as [string, unknown]), s().lessons),
   cacheGet: <T>(k: string) => get<T>(k, s().cache),
   cacheSet: (k: string, v: unknown) => set(k, v, s().cache),
 };

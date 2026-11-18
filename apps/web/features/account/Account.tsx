@@ -6,6 +6,7 @@ import { api, ApiError, UserSchema } from "@/lib/api";
 import { db } from "@/lib/db";
 import { drain } from "@/lib/sync";
 import { useAuth } from "@/stores/app";
+import { FileSync } from "./FileSync";
 
 function download(name: string, data: unknown) {
   const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
@@ -42,6 +43,21 @@ export function Account() {
     try { localStorage.removeItem("aps-prefs"); localStorage.removeItem("aps-perf"); } catch { /* ignore */ }
     setMsg("Local data cleared. Reload the page.");
   };
+
+  if (process.env.NEXT_PUBLIC_STATIC) {
+    return (
+      <div className="space-y-4 max-w-xl">
+        <Notice>This is the static build of APS. Everything runs and is saved on this device; use Sync below to keep devices in step.</Notice>
+        <FileSync />
+        <Card className="space-y-2">
+          <h2 className="text-sm font-semibold">This device</h2>
+          <div className="flex flex-wrap gap-2"><Button variant="danger" onClick={clearLocal}>Clear local data</Button></div>
+          <p className="text-xs text-muted">Clearing removes data from this device only. If Gist sync is on, it will come back on the next sync.</p>
+        </Card>
+        {msg && <Notice>{msg}</Notice>}
+      </div>
+    );
+  }
 
   if (user) {
     return (
